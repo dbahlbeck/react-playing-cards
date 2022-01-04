@@ -47,7 +47,7 @@ const CardImage = (props) => {
 function CardTable() {
     const [cards, setCards] = useState([])
 
-    const scaleBy = 1.10;
+    const scaleBy = 0.90;
     const stageRef = useRef();
     let lastCenter = null;
     let lastDist = 0;
