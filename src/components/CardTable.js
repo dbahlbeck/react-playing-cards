@@ -155,14 +155,19 @@ function CardTable() {
         lastDist = 0;
     }
 
+    function shuffle(arr) {
+        arr.sort( () => Math.random() - 0.5 );
+    }
+
     useEffect(() => {
         const result = [];
         suits.forEach((suit) => {
             ranks.forEach((rank) => {
-                result.push("1x/" + suit + "_" + rank + ".png")
+                result.push("1x/" + suit + "_" + rank + ".png");
             })
         })
-        setCards(result)
+        shuffle(result);
+        setCards(result);
     }, [])
 
     return (
