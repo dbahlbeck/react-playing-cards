@@ -13,17 +13,14 @@ const CardImage = (props) => {
     const [lifted, setLifted] = useState(false)
 
     function onDragMove(event) {
-        console.log('move');
         setLifted(true)
     }
 
     function onDragEnd(event) {
-        console.log('end');
         setLifted(false)
     }
 
     function click(event) {
-        console.log('Clicked!')
         setFaceDown(!faceDown);
     }
 
@@ -162,10 +159,8 @@ function CardTable() {
         suits.forEach((suit) => {
             ranks.forEach((rank) => {
                 result.push("1x/" + suit + "_" + rank + ".png")
-                console.log("1x/" + suit + "_" + rank + ".png")
             })
         })
-        console.log(result)
         setCards(result)
     }, [])
 
