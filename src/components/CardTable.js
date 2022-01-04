@@ -46,7 +46,7 @@ function CardTable() {
         setCards(result)
     }, [])
     return (
-        <Stage width={window.innerWidth} height={window.innerHeight} style={{border: '5px solid #000'}}>
+        <Stage width={window.innerWidth} height={window.innerHeight} style={{border: '5px solid #000'}} draggable>
             <Layer>
                 {cards.map((card, index) => {
                     return <CardImage src={card} key={card} index={index} />
