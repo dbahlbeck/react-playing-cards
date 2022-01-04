@@ -27,10 +27,7 @@ const CardImage = (props) => {
         setFaceDown(!faceDown);
     }
 
-    // TODO: Add zoom
-    // https://colinwren.medium.com/adding-zoom-and-panning-to-your-react-konva-stage-3e0a38c31d38
-
-    return <Image 
+    return <Image
                 scaleY={0.5}
                 scaleX={0.5}
                 shadowEnabled={lifted}
@@ -104,7 +101,7 @@ function CardTable() {
                 if (stage.isDragging()) {
                     stage.stopDrag();
                 }
-        
+
                 var p1 = {
                     x: touch1.clientX,
                     y: touch1.clientY
@@ -113,42 +110,42 @@ function CardTable() {
                     x: touch2.clientX,
                     y: touch2.clientY
                 };
-        
+
                 if (!lastCenter) {
                     lastCenter = getCenter(p1, p2);
                     return;
                 }
                 var newCenter = getCenter(p1, p2);
-        
+
                 var dist = getDistance(p1, p2);
-        
+
                 if (!lastDist) {
                     lastDist = dist;
                 }
-        
+
                 // local coordinates of center point
                 var pointTo = {
                     x: (newCenter.x - stage.x()) / stage.scaleX(),
                     y: (newCenter.y - stage.y()) / stage.scaleX()
-                };                      
-        
+                };
+
                 var scale = stage.scaleX() * (dist / lastDist);
-        
+
                 stage.scaleX(scale);
                 stage.scaleY(scale);
-        
+
                 // calculate new position of the stage
                 var dx = newCenter.x - lastCenter.x;
                 var dy = newCenter.y - lastCenter.y;
-        
+
                 var newPos = {
                     x: newCenter.x - pointTo.x * scale + dx,
                     y: newCenter.y - pointTo.y * scale + dy
                 };
-        
+
                 stage.position(newPos);
                 stage.batchDraw();
-        
+
                 lastDist = dist;
                 lastCenter = newCenter;
             }
