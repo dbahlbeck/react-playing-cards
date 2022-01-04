@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {Image, Layer, Stage} from "react-konva";
 import useImage from "use-image";
 
-const scaleBy = 1.01;
 const suits = ['heart', 'spade', 'diamond', 'club'];
 const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
 
@@ -47,6 +46,8 @@ const CardImage = (props) => {
 
 function CardTable() {
     const [cards, setCards] = useState([])
+
+    const scaleBy = 1.10;
     const stageRef = useRef();
     let lastCenter = null;
     let lastDist = 0;
