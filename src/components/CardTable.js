@@ -25,7 +25,8 @@ const CardImage = (props) => {
         console.log('Clicked!')
         setFaceDown(!faceDown);
     }
-    return <Image scaleY={0.5} scaleX={0.5} shadowEnabled={lifted} shadowOffsetX={10} shadowOffsetY={10} shadowOpacity={0.2} image={faceDown ? backImage : frontImage} x={100} y={100}
+
+    return <Image scaleY={0.5} scaleX={0.5} shadowEnabled={lifted} shadowOffsetX={10} shadowOffsetY={10} shadowOpacity={0.2} image={faceDown ? backImage : frontImage} x={100 + (100 * (props.index % 13))} y={100  + (140 * Math.floor(props.index / 13))}
                   draggable onDblClick={click} onMouseUp={onDragEnd} onMouseDown={onDragMove} onDragEnd={onDragEnd} onDragMove={onDragMove}/>;
 
 };
@@ -47,8 +48,8 @@ function CardTable() {
     return (
         <Stage width={window.innerWidth} height={window.innerHeight} style={{border: '5px solid #000'}}>
             <Layer>
-                {cards.map((card) => {
-                    return <CardImage src={card} key={card}/>
+                {cards.map((card, index) => {
+                    return <CardImage src={card} key={card} index={index} />
                 })}
             </Layer>
         </Stage>);
