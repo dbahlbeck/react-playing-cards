@@ -1,42 +1,23 @@
 import React, {createContext, useEffect, useState} from 'react';
+import {generateDeck, readFromLocalStorage, shuffle, writeToLocalStorage} from "./Deck";
 
 export const CardTableContext = createContext();
-
-const suits = ['heart', 'spade', 'diamond', 'club'];
-const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
 
 export const CardTableProvider = (props) => {
 
     const [cards, setCards] = useState(() => {
         window.addEventListener('storage', storageEventHandler, false);
-        let localStorageState = JSON.parse(localStorage.getItem('cards'));
+        let localStorageState = readFromLocalStorage();
         if (!localStorageState) {
-            const result = [];
-            suits.forEach((suit) => {
-                ranks.forEach((rank) => {
-                    result.push({
-                        file: "1x/" + suit + "_" + rank + ".png",
-                        faceDown: false,
-                        x: 100,
-                        y: 100,
-                        rank: rank,
-                        suit: suit
-                    });
-                })
-            })
-            shuffle(result);
-            return result;
+            let deck = generateDeck();
+            return shuffle(deck);
         } else {
             return localStorageState
         }
     })
 
-    function shuffle(arr) {
-        arr.sort(() => Math.random() - 0.5);
-    }
-
     function storageEventHandler() {
-        setCards(JSON.parse(localStorage.getItem('cards')))
+        setCards(readFromLocalStorage())
     }
 
     const updateCard = (card) => {
@@ -46,13 +27,14 @@ export const CardTableProvider = (props) => {
         foundCard.y = card.y
         foundCard.faceDown = card.faceDown
         setCards(copyOfCards);
-        localStorage.setItem('cardTable', copyOfCards)
+        writeToLocalStorage(copyOfCards)
     }
 
     const updateCards = (f) => {
         let clone = [...cards]
         clone.forEach((card, index) => f(card, index));
         setCards(clone);
+        writeToLocalStorage(clone)
     }
 
     const layout = () => {
@@ -82,7 +64,7 @@ export const CardTableProvider = (props) => {
     };
 
     useEffect(() => {
-        localStorage.setItem('cards', JSON.stringify(cards))
+        writeToLocalStorage(cards)
     }, [cards])
 
     return (
