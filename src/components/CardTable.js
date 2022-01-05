@@ -1,51 +1,11 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Image, Layer, Stage} from "react-konva";
-import useImage from "use-image";
+import React, {useContext, useRef} from "react";
+import {Layer, Stage} from "react-konva";
+import PlayingCard from "./PlayingCard";
+import {CardTableContext, CardTableProvider} from "../contexts/CardTableContext";
 
-const suits = ['heart', 'spade', 'diamond', 'club'];
-const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
-
-const CardImage = (props) => {
-    const [frontImage, status] = useImage(props.src);
-    const [backImage] = useImage('1x/back-navy.png');
-    const [faceDown, setFaceDown] = useState(false)
-    const [lifted, setLifted] = useState(false)
-
-    function onDragMove(event) {
-        setLifted(true)
-    }
-
-    function onDragEnd(event) {
-        setLifted(false)
-    }
-
-    function click(event) {
-        setFaceDown(!faceDown);
-    }
-
-    return <Image
-                scaleY={0.5}
-                scaleX={0.5}
-                shadowEnabled={lifted}
-                shadowOffsetX={10}
-                shadowOffsetY={10}
-                shadowOpacity={0.2}
-                image={faceDown ? backImage : frontImage}
-                x={100 + (100 * (props.index % 13))}
-                y={100  + (140 * Math.floor(props.index / 13))}
-                draggable
-                onDblClick={click}
-                onMouseUp={onDragEnd}
-                onMouseDown={onDragMove}
-                onDragEnd={onDragEnd}
-                onDragMove={onDragMove}
-                perfectDrawEnabled={false}
-            />;
-
-};
 
 function CardTable() {
-    const [cards, setCards] = useState([])
+    const cardTableContext = useContext(CardTableContext)
 
     const scaleBy = 0.90;
     const stageRef = useRef();
@@ -65,7 +25,7 @@ function CardTable() {
     }
 
     function isTouchEnabled() {
-        return ( 'ontouchstart' in window ) || ( navigator.maxTouchPoints > 0 ) || ( navigator.msMaxTouchPoints > 0 );
+        return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
     }
 
     function zoomStage(event) {
@@ -73,13 +33,13 @@ function CardTable() {
         if (stageRef.current) {
             const stage = stageRef.current;
             const oldScale = stage.scaleX();
-            const { x: pointerX, y: pointerY } = stage.getPointerPosition();
+            const {x: pointerX, y: pointerY} = stage.getPointerPosition();
             const mousePointTo = {
                 x: (pointerX - stage.x()) / oldScale,
                 y: (pointerY - stage.y()) / oldScale,
             };
             const newScale = event.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-            stage.scale({ x: newScale, y: newScale });
+            stage.scale({x: newScale, y: newScale});
             const newPos = {
                 x: pointerX - mousePointTo.x * newScale,
                 y: pointerY - mousePointTo.y * newScale,
@@ -155,21 +115,6 @@ function CardTable() {
         lastDist = 0;
     }
 
-    function shuffle(arr) {
-        arr.sort( () => Math.random() - 0.5 );
-    }
-
-    useEffect(() => {
-        const result = [];
-        suits.forEach((suit) => {
-            ranks.forEach((rank) => {
-                result.push("1x/" + suit + "_" + rank + ".png");
-            })
-        })
-        shuffle(result);
-        setCards(result);
-    }, [])
-
     return (
         <Stage
             width={window.innerWidth}
@@ -181,11 +126,13 @@ function CardTable() {
             onTouchEnd={handleTouchEnd}
             ref={stageRef}
         >
-            <Layer>
-                {cards.map((card, index) => {
-                    return <CardImage src={card} key={card} index={index} />
-                })}
-            </Layer>
+            <CardTableProvider>
+                <Layer>
+                    {cardTableContext.cards.map((card, index) => {
+                        return <PlayingCard card={card} key={index} index={index}/>
+                    })}
+                </Layer>
+            </CardTableProvider>
         </Stage>);
 }
 

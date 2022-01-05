@@ -19,7 +19,7 @@ function App() {
                         <Button onClick={cardTableContext.reveal}>Reveal all</Button>
                     </Col>
                     <Col>
-                        <Button>Hide all</Button>
+                        <Button onClick={cardTableContext.hide}>Hide all</Button>
                     </Col>
                 </Row>
                 <Row>

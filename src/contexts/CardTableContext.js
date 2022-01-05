@@ -1,5 +1,4 @@
 import React, {createContext, useEffect, useState} from 'react';
-import data from './52CardDeck.json'
 
 export const CardTableContext = createContext();
 
@@ -10,16 +9,39 @@ export const CardTableProvider = (props) => {
 
     const [cards, setCards] = useState(() => {
         window.addEventListener('storage', storageEventHandler, false);
-        return JSON.parse(localStorage.getItem('cards')) || data;
+        let localStorageState = JSON.parse(localStorage.getItem('cards'));
+        if (!localStorageState) {
+            const result = [];
+            suits.forEach((suit) => {
+                ranks.forEach((rank) => {
+                    result.push({
+                        file: "1x/" + suit + "_" + rank + ".png",
+                        faceDown: false,
+                        x: 100,
+                        y: 100,
+                        rank: rank,
+                        suit: suit
+                    });
+                })
+            })
+            shuffle(result);
+            return result;
+        } else {
+            return localStorageState
+        }
     })
 
+    function shuffle(arr) {
+        arr.sort(() => Math.random() - 0.5);
+    }
+
     function storageEventHandler() {
-        setCards(JSON.parse(localStorage.getItem('cards')) || data)
+        setCards(JSON.parse(localStorage.getItem('cards')))
     }
 
     const updateCard = (card) => {
         let copyOfCards = [...cards]
-        let foundCard = copyOfCards.filter(x=> x.cardId === card.cardId)[0]
+        let foundCard = copyOfCards.filter(x => x.suit === card.suit && x.rank === card.rank)[0]
         foundCard.x = card.x
         foundCard.y = card.y
         foundCard.faceDown = card.faceDown
@@ -29,14 +51,14 @@ export const CardTableProvider = (props) => {
 
     const updateCards = (f) => {
         let clone = [...cards]
-        clone.forEach(card => f(card));
+        clone.forEach((card, index) => f(card, index));
         setCards(clone);
     }
 
     const layout = () => {
-        updateCards(card => {
-            card.x = 100 + card.rank * 20;
-            card.y = 20;
+        updateCards((card,index) => {
+            card.x = 100 + (100 * (index % 13))
+            card.y = 100  + (140 * Math.floor(index / 13))
         })
     }
     const reveal = () => {
@@ -45,11 +67,18 @@ export const CardTableProvider = (props) => {
         })
     }
 
+    const hide = () => {
+        updateCards(card => {
+            card.faceDown = true;
+        })
+    }
+
     const state = {
         cards: cards,
         updateCard: updateCard,
         layout: layout,
-        reveal: reveal
+        reveal: reveal,
+        hide: hide
     };
 
     useEffect(() => {
@@ -62,4 +91,3 @@ export const CardTableProvider = (props) => {
         </CardTableContext.Provider>
     );
 };
-export default CardTableContext;
