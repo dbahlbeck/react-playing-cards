@@ -10,7 +10,8 @@ export const CardTableProvider = (props) => {
         let localStorageState = readFromLocalStorage();
         if (!localStorageState) {
             let deck = generateDeck();
-            return shuffle(deck);
+            shuffle(deck);
+            return deck;
         } else {
             return localStorageState
         }
