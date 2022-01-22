@@ -1,34 +1,16 @@
 import './App.css';
-import CardTable from "./components/CardTable";
-import {Button, Col, Container, Row} from "react-bootstrap";
-import {useContext} from "react";
-import {CardTableContext} from "./contexts/CardTableContext";
+import {Route, Routes} from "react-router-dom";
+import TextCardTablesPage from "./pages/TextCardTablesPage";
+import GraphicalCardTablePage from "./pages/GraphicalCardTablePage";
+import TextCardTablePage from "./pages/TextCardTablePage";
 
 function App() {
-    const cardTableContext = useContext(CardTableContext)
     return (
-            <Container>
-                <Row>
-                    <Col>
-                        <Button>Shuffle</Button>
-                    </Col>
-                    <Col>
-                        <Button onClick={cardTableContext.layout}>Layout</Button>
-                    </Col>
-                    <Col>
-                        <Button onClick={cardTableContext.reveal}>Reveal all</Button>
-                    </Col>
-                    <Col>
-                        <Button onClick={cardTableContext.hide}>Hide all</Button>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <CardTable/>
-                    </Col>
-                </Row>
-            </Container>
-
+        <Routes>
+            <Route path="/" element={<TextCardTablesPage/>}/>
+            <Route path="/table" element={<TextCardTablePage/>}/>
+            <Route path="/gtable" element={<GraphicalCardTablePage/>}/>
+        </Routes>
     );
 }
 

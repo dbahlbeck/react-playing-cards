@@ -1,11 +1,11 @@
 import React, {useContext, useRef} from "react";
 import {Layer, Stage} from "react-konva";
+import {GQLCardTableContext, GQLCardTableProvider} from "../contexts/GQLCardTableContext";
 import PlayingCard from "./PlayingCard";
-import {CardTableContext, CardTableProvider} from "../contexts/CardTableContext";
 
 
 function CardTable() {
-    const cardTableContext = useContext(CardTableContext)
+    const gqlCardTableContext = useContext(GQLCardTableContext)
 
     const scaleBy = 0.90;
     const stageRef = useRef();
@@ -126,13 +126,15 @@ function CardTable() {
             onTouchEnd={handleTouchEnd}
             ref={stageRef}
         >
-            <CardTableProvider>
+            <GQLCardTableProvider>
                 <Layer>
-                    {cardTableContext.cards.map((card, index) => {
-                        return <PlayingCard card={card} key={index} index={index}/>
-                    })}
+                    {
+                        gqlCardTableContext.cardTable.cards.map((card, index) => {
+                            return <PlayingCard card={card} key={index} index={index}/>
+                        })
+                    }
                 </Layer>
-            </CardTableProvider>
+            </GQLCardTableProvider>
         </Stage>);
 }
 

@@ -4,13 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {CardTableProvider} from "./contexts/CardTableContext";
+import {BrowserRouter} from "react-router-dom";
+import {Amplify} from "aws-amplify";
+import config from "./config.json";
+import {GQLCardTableProvider} from "./contexts/GQLCardTableContext";
+
+Amplify.configure(config)
 
 ReactDOM.render(
     <React.StrictMode>
-        <CardTableProvider>
-            <App/>
-        </CardTableProvider>
+        <BrowserRouter>
+            <GQLCardTableProvider>
+                <App/>
+            </GQLCardTableProvider>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

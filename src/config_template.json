@@ -1,0 +1,6 @@
+{
+  "aws_appsync_graphqlEndpoint": "endpoint_url",
+  "aws_appsync_region": "eu-north-1",
+  "aws_appsync_authenticationType": "API_KEY",
+  "aws_appsync_apiKey": "Your API key"
+}
