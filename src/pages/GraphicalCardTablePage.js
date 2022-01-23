@@ -13,10 +13,6 @@ function GraphicalCardTablePage() {
         gqlCardTableContext.setCardTableId(urlParams.get('cardTableId'));
     }, [gqlCardTableContext])
 
-    useEffect(() => {
-        console.log(gqlCardTableContext.cardTable)
-    }, [gqlCardTableContext.cardTable])
-
     return (
         <Container>
             <Row>

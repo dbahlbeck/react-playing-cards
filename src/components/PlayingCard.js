@@ -2,12 +2,14 @@ import React, {useContext, useState} from "react";
 import {Image} from "react-konva";
 import useImage from "use-image";
 import {GQLCardTableContext} from "../contexts/GQLCardTableContext";
+import {API, graphqlOperation} from "aws-amplify";
+import * as mutations from "../graphql/mutations";
 
 
 function PlayingCard(props) {
     const gqlCardTableContext = useContext(GQLCardTableContext)
 
-    const [frontImage] = useImage('1x/back-navy.png');
+    const [frontImage] = useImage('1x/' + props.card.suit + '_' + props.card.rank + '.png');
     const [backImage] = useImage('1x/back-navy.png');
     const [lifted, setLifted] = useState(false)
 
@@ -24,8 +26,16 @@ function PlayingCard(props) {
     }
 
     function onDoubleClick() {
-        props.card.faceDown = !props.card.faceDown;
-        // gqlCardTableContext.updateCard(props.card);
+        console.log('DBLCLK')
+        API.graphql(graphqlOperation(mutations.flipCard,
+            {
+                cardTableId: props.card.cardTableId,
+                cardId: props.card.cardId,
+                faceDown: !props.card.faceDown
+            })).then((result) => {
+                console.log(result)
+            props.card.faceDown = !props.card.faceDown
+        })
     }
 
     return (
