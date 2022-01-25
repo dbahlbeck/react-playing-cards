@@ -12,15 +12,21 @@ function PlayingCard(props) {
     const [frontImage] = useImage('1x/' + props.card.suit + '_' + props.card.rank + '.png');
     const [backImage] = useImage('1x/back-navy.png');
     const [lifted, setLifted] = useState(false)
+    const [moveCount, setMoveCount] = useState(0)
 
-    function onDragMove() {
+    function onDragMove(e) {
         setLifted(true)
+        if (moveCount % 10 === 0) {
+            onDragEnd(e)
+        }
+        setMoveCount((prev) => {
+            return prev + 1
+        })
     }
 
     function onDragEnd(e) {
-        props.card.x = e.target.attrs.x;
-        props.card.y = e.target.attrs.y;
-        console.log(props.card)
+        props.card.x = parseInt(e.target.attrs.x);
+        props.card.y = parseInt(e.target.attrs.y);
         gqlCardTableContext.moveCard(props.card);
         setLifted(false)
     }

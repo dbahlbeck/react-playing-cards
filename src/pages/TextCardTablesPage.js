@@ -8,7 +8,7 @@ import * as mutations from "../graphql/mutations";
 const suits = ['heart', 'spade', 'diamond', 'club'];
 const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
 
-function TextCardTablesPage() {
+function TextCardTablesPage({signOut}) {
     const [cardTable, setCardTable] = useState([])
     const [title, setTitle] = useState("New table")
 
@@ -46,6 +46,9 @@ function TextCardTablesPage() {
     return (<Container>
             <Row>
                 <Col><h2>Card Games</h2></Col>
+                <Col>
+                    <button onClick={signOut}>Sign out</button>
+                </Col>
             </Row>
             <Row>
                 <Col>

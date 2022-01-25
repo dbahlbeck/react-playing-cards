@@ -6,16 +6,24 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter} from "react-router-dom";
 import {Amplify} from "aws-amplify";
-import config from "./config.json";
 import {GQLCardTableProvider} from "./contexts/GQLCardTableContext";
+import awsExports from './aws-exports'
+import {Authenticator} from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css'; // default theme
 
-Amplify.configure(config)
+Amplify.configure(awsExports)
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <GQLCardTableProvider>
-                <App/>
+                <Authenticator>
+                    {({ signOut, user }) => (
+                        <main>
+                            <App signOut={signOut}/>
+                        </main>
+                    )}
+                </Authenticator>
             </GQLCardTableProvider>
         </BrowserRouter>
     </React.StrictMode>,
