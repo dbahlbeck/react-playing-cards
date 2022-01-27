@@ -4,6 +4,7 @@ import CardTableSummary from "../components/CardTableSummary";
 import {API, graphqlOperation} from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 const suits = ['heart', 'spade', 'diamond', 'club'];
 const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
@@ -61,18 +62,25 @@ function TextCardTablesPage({signOut}) {
                     </InputGroup>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <h3>List of tables</h3>
-                </Col>
-            </Row>
-            <Row>
-                {
-                    cardTable.map((cardTable) => {
-                        return <CardTableSummary key={cardTable.cardTableId} cardTable={cardTable}/>
-                    })
-                }
 
+            <Row>
+                <TableContainer>
+                    <Table sx={{ minWidth: 650 }} size="small" >
+                        <TableHead>
+                        <TableRow>
+                            <TableCell>Table ID</TableCell>
+                            <TableCell>Table Title</TableCell>
+                            <TableCell>Join</TableCell>
+                        </TableRow>
+                    </TableHead>
+                        <TableBody>
+                                {
+                                    cardTable.map((cardTable) => {
+                                        return <CardTableSummary key={cardTable.cardTableId} cardTable={cardTable}/>
+                                    })
+                                }
+                        </TableBody></Table>
+                </TableContainer>
             </Row>
         </Container>
     )

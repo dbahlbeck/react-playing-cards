@@ -8,7 +8,6 @@ import {BrowserRouter} from "react-router-dom";
 import {Amplify} from "aws-amplify";
 import {GQLCardTableProvider} from "./contexts/GQLCardTableContext";
 import awsExports from './aws-exports'
-import {Authenticator} from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'; // default theme
 
 Amplify.configure(awsExports)
@@ -17,13 +16,7 @@ ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <GQLCardTableProvider>
-                <Authenticator>
-                    {({ signOut, user }) => (
-                        <main>
-                            <App signOut={signOut}/>
-                        </main>
-                    )}
-                </Authenticator>
+                <App/>
             </GQLCardTableProvider>
         </BrowserRouter>
     </React.StrictMode>,
