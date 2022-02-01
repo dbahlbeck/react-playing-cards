@@ -1,7 +1,8 @@
-import {Col, Container, Row} from "react-bootstrap";
 import {useContext, useEffect} from "react";
 import {GQLCardTableContext} from "../contexts/GQLCardTableContext";
 import CardTable from "../components/CardTable";
+import {Grid} from "@aws-amplify/ui-react";
+import Box from "@mui/material/Box";
 
 
 function GraphicalCardTablePage() {
@@ -14,14 +15,13 @@ function GraphicalCardTablePage() {
     }, [gqlCardTableContext])
 
     return (
-        <Container>
-            <Row>
-                <Col>
+        <Box sx={{flexGrow: 1}}>
+            <Grid container>
+                <Grid item xs={12}>
                     <CardTable/>
-                </Col>
-            </Row>
-        </Container>
-
+                </Grid>
+            </Grid>
+        </Box>
     );
 }
 

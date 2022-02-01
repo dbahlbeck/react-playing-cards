@@ -1,12 +1,20 @@
-import {AppBar, IconButton, Menu, Toolbar, Typography} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
-import {AccountCircle} from "@mui/icons-material";
-import React from "react";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import React, {useContext} from "react";
 import MenuItemLink from "./MenuItemLink";
+import {AuthContext} from "../contexts/AuthContext";
+import {Link, useNavigate} from "react-router-dom";
 
-function CardAppBar({signOut}) {
+function CardAppBar() {
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const authContext = useContext(AuthContext)
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -16,17 +24,23 @@ function CardAppBar({signOut}) {
         setAnchorEl(null);
     };
 
+    let navigate = useNavigate();
+
     const handleSignOut = () => {
         handleClose()
-        signOut()
+        authContext.signOut()
+        navigate("/")
     }
 
     return <>
         <AppBar position="static">
             <Toolbar variant="dense">
-                <Typography variant="h6" color="inherit" component="div" sx={{flexGrow: 1}}>
-                    Just Play
-                </Typography>
+                <MenuItem component={Link} to={'/'} >
+                    <Typography variant="h6" color="inherit" component="div" >
+                        Just Play
+                    </Typography>
+                </MenuItem>
+                <Box sx={{flexGrow: 1}}/>
                 <MenuItemLink to={'/tables'} title={'Join table'}/>
                 <MenuItemLink to={'/createTable'} title={'Create table'}/>
                 <MenuItemLink to={'/instructions'} title={'Instructions'}/>

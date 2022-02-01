@@ -1,10 +1,11 @@
-import {Button, Col, Container, FormControl, InputGroup, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import CardTableSummary from "../components/CardTableSummary";
 import {API, graphqlOperation} from "aws-amplify";
 import * as queries from "../graphql/queries";
 import * as mutations from "../graphql/mutations";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from "@mui/material";
+import {Authenticator, withAuthenticator} from "@aws-amplify/ui-react";
+import Button from "@mui/material/Button";
 
 const suits = ['heart', 'spade', 'diamond', 'club'];
 const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king'];
@@ -44,46 +45,45 @@ function TextCardTablesPage({signOut}) {
         API.graphql(graphqlOperation(queries.getCardTables)).then(onGetCardTables);
     }
 
-    return (<Container>
-            <Row>
-                <Col><h2>Card Games</h2></Col>
-                <Col>
-                    <button onClick={signOut}>Sign out</button>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <InputGroup className="mb-3">
-                        <FormControl placeholder="Table name" value={title}
-                                     onChange={(event) => setTitle(event.target.value)}/>
-                        <Button id="button-addon2" onClick={createTable}>
-                            Create table
-                        </Button>
-                    </InputGroup>
-                </Col>
-            </Row>
+    return (<Grid container>
+            <Grid item xs={4}>
 
-            <Row>
+                <TextField id="outlined-basic"
+                           label="Table name" variant="standard"
+                           value={title}
+                           onChange={(event) => setTitle(event.target.value)}/>
+                {/*<InputGroup className="mb-3">*/}
+                {/*    <FormControl placeholder="Table name" value={title}*/}
+                {/*                 onChange={(event) => setTitle(event.target.value)}/>*/}
+                {/*    <Button id="button-addon2" onClick={createTable}>*/}
+                {/*        Create table*/}
+                {/*    </Button>*/}
+                {/*</InputGroup>*/}
+            </Grid>
+            <Grid item xs={8}>
+                <Button onClick={createTable}>Create table</Button>
+            </Grid>
+            <Grid item xs={12}>
                 <TableContainer>
-                    <Table sx={{ minWidth: 650 }} size="small" >
+                    <Table sx={{minWidth: 650}} size="small">
                         <TableHead>
-                        <TableRow>
-                            <TableCell>Table ID</TableCell>
-                            <TableCell>Table Title</TableCell>
-                            <TableCell>Join</TableCell>
-                        </TableRow>
-                    </TableHead>
+                            <TableRow>
+                                <TableCell>Table ID</TableCell>
+                                <TableCell>Table Title</TableCell>
+                                <TableCell>Join</TableCell>
+                            </TableRow>
+                        </TableHead>
                         <TableBody>
-                                {
-                                    cardTable.map((cardTable) => {
-                                        return <CardTableSummary key={cardTable.cardTableId} cardTable={cardTable}/>
-                                    })
-                                }
+                            {
+                                cardTable.map((cardTable) => {
+                                    return <CardTableSummary key={cardTable.cardTableId} cardTable={cardTable}/>
+                                })
+                            }
                         </TableBody></Table>
                 </TableContainer>
-            </Row>
-        </Container>
+            </Grid>
+        </Grid>
     )
 }
 
-export default TextCardTablesPage;
+export default withAuthenticator(TextCardTablesPage);

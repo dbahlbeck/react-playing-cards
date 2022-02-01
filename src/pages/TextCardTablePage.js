@@ -1,7 +1,7 @@
 import {useContext, useEffect} from "react";
-import {Col, Container, Row} from "react-bootstrap";
 import TextCard from "../components/TextCard";
 import {GQLCardTableContext} from "../contexts/GQLCardTableContext";
+import {Grid} from "@mui/material";
 
 function TextCardTablePage() {
     const gqlCardTableContext = useContext(GQLCardTableContext)
@@ -13,19 +13,17 @@ function TextCardTablePage() {
     }, [gqlCardTableContext])
 
     return (
-        <Container fluid>
-            <Row>
-                <Col>Card Table</Col>
-            </Row>
-            <Row>
+        <Grid container>
+            <Grid item xs={12}>Card Table</Grid>
+            <Grid item xs={12}>
                 {
                     gqlCardTableContext.cardTable !== null && gqlCardTableContext.cardTable.cards && gqlCardTableContext.cardTable.cards.map((card) => {
                         return <TextCard card={card} key={card.cardId}/>
                     })
                 }
-            </Row>
+            </Grid>
 
-        </Container>
+        </Grid>
 
     );
 }

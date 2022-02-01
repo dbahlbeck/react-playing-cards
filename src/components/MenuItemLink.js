@@ -1,6 +1,6 @@
 import MenuItem from "@mui/material/MenuItem";
 import {Link} from "react-router-dom";
-import {Typography} from "@mui/material";
+import Typography from "@mui/material/Typography";
 import React from "react";
 
 function MenuItemLink(props) {
